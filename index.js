@@ -1,7 +1,18 @@
 console.log("Initializing server...");
 
+const keys = require("./config/keys");
+const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
+
+mongoose.connect(
+  process.env.mongoURI || keys.mongoURI,
+  { useNewUrlParser: true }
+);
+console.log("MongoDB connected.");
+
+//Load User model
+require("./models/User");
 
 //Configure passport settings
 require("./services/passport");

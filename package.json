@@ -31,6 +31,7 @@
   "homepage": "https://github.com/e1337us3r/FeedUp#readme",
   "dependencies": {
     "express": "^4.16.3",
+    "mongoose": "^5.2.7",
     "nodemon": "^1.18.3",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^1.0.0"
