@@ -1,8 +1,9 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const keys = process.env.prod ? {} : require("../config/keys");
+const keys = require("../config/keys");
 const mongoose = require("mongoose");
 
+//Get user model from mongoose
 const User = mongoose.model("users");
 
 passport.serializeUser((user, done) => {
@@ -18,9 +19,10 @@ passport.deserializeUser((id, done) => {
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.clientID || keys.googleClientID,
-      clientSecret: process.env.clientSecret || keys.googleClientSecret,
-      callbackURL: "/auth/google/callback"
+      clientID: keys.googleClientID,
+      clientSecret: keys.googleClientSecret,
+      callbackURL: "/auth/google/callback",
+      proxy: true
     },
     (accessToken, refreshToken, profile, done) => {
       //This function is called after OAuth process is complete

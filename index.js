@@ -1,6 +1,6 @@
 console.log("Initializing server...");
 
-const keys = process.env.prod ? {} : require("../config/keys");
+const keys = require("./config/keys");
 const mongoose = require("mongoose");
 const express = require("express");
 const cookieSession = require("cookie-session");
@@ -11,7 +11,7 @@ const app = express();
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    keys: [process.env.cookieKey || keys.cookieKey]
+    keys: [keys.cookieKey]
   })
 );
 
@@ -19,7 +19,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose.connect(
-  process.env.mongoURI || keys.mongoURI,
+  keys.mongoURI,
   { useNewUrlParser: true }
 );
 console.log("MongoDB connected.");
