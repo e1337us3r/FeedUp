@@ -1,6 +1,6 @@
 console.log("Initializing server...");
 
-const keys = require("./config/keys");
+const keys = process.env.prod ? {} : require("../config/keys");
 const mongoose = require("mongoose");
 const express = require("express");
 const cookieSession = require("cookie-session");
