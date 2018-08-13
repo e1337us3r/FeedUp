@@ -5,6 +5,16 @@ const mongoose = require("mongoose");
 
 const User = mongoose.model("users");
 
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id).then(user => {
+    done(null, user);
+  });
+});
+
 passport.use(
   new GoogleStrategy(
     {
@@ -14,7 +24,21 @@ passport.use(
     },
     (accessToken, refreshToken, profile, done) => {
       //This function is called after OAuth process is complete
-      new User({ googleID: profile.id }).save();
+
+      //Look up in databese and see if user exists
+
+      User.findOne({ googleID: profile.id }).then(existingUser => {
+        if (existingUser) {
+          console.log("Existing user, logging in.");
+          done(null, existingUser);
+        } else {
+          console.log("User unrecognised, creating new account.");
+
+          new User({ googleID: profile.id })
+            .save()
+            .then(newUser => done(null, newUser));
+        }
+      });
     }
   )
 );

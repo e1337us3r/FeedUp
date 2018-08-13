@@ -3,7 +3,20 @@ console.log("Initializing server...");
 const keys = require("./config/keys");
 const mongoose = require("mongoose");
 const express = require("express");
+const cookieSession = require("cookie-session");
+const passport = require("passport");
 const app = express();
+
+//Setup cookie functionality to work in express
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [process.env.cookieKey || keys.cookieKey]
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 mongoose.connect(
   process.env.mongoURI || keys.mongoURI,
